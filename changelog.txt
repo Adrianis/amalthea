@@ -1,0 +1,34 @@
+08/05 	- Added amalthea folder & classes, added defaultengine & defaultinput ini files
+
+09/05 	- Added interp rotation delay to torch (amPawn) 
+		- Added inner & outer cone properties to torch (amTorch)
+		
+10/05	- Added [non-functioning] amPhysicsGun class as extention of UTPhysicsGun
+		
+13/05 	- Added PlayerInput class [empty]
+		- amPlayerController now extends UTPlayerController 
+		- amPawn now extends UTPawn
+		- Removed UT 'dodge' mechanic [cuz it's dumb] (amPawn) 
+		- Changed EyeHeight properties so PC is taller, though collision cylinder remains the same height [meaning PC will duck under high objects, looks dumb, change later] (amPawn)
+		- Added ability to Walk / Run [Lshift to run] (amPawn)
+		
+14/05	- Implemented code from 'PhysicsGrabber' project (amPawn, amPlayerInput, amPlayerController, amHUD, amGame)
+		- Added amGrabCrate class, implementing code from 'PhysicsGrabber' project
+		
+16/05	- amGrabCrate now uses the Dev Crate staticmesh (amGrabCrate)
+		- changed player pawn collision cylinder properties (amPawn)
+		
+17/05	- Changed grabbing methods, now overrides Start/StopFire to use mouse click & hold to grab crates (amGrabCrate, amPawn, amPlayerInput)
+		- Added reference to PlayerController to pawn class [var MyController] (amPawn)
+		- Fixed references to physics mat's to timorem_devpak (amGrabCrate)
+		- Changed player speed values / walking division (amPawn)
+		
+18/05	- Added new placeable grab boxes for both box meshes, extending amGrabCrate [which is no longer placeable] (amTimDevCrate, amTimWoodCrate, amGrabCrate)
+		- Changed default Mass setting for grabbable boxes to 500, so they don't fly around like theyre made of paper (amGrabCrate: amTimDevCrate, amTimWoodCrate)
+		- Added non-functioning code for crouching [needs fix] (amPlayerInput, amPawn)
+
+20/05	- Added code for throwing a held crate [seems to throw from bottom, making it spin, need to fix] [note: throwforce not affected by mass of crate] (amPawn, amGrabCrate)
+		- Changed default mass for grab boxes, decreased  to 100 (amGrabCrate: amTimDevCrate, amTimeWoodCrate)
+		
+26/05	- Added code for crouching, from UTPlayerInput (amPawn, amPlayerInput, DefaultInput.ini)
+		- Added code for leaning, adjusted from code uploaded on forums by 'Grosie' (amPlayerInput, amPlayerController, DefaultInput.ini)

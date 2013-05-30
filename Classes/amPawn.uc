@@ -165,11 +165,12 @@ defaultproperties
 		
 		BaseEyeHeight=60.0
 		EyeHeight=60.0
-		//CrouchHeight=30.0
+		CrouchHeight=35.0
 
 		GroundSpeed=600.0 // base running speed
 		WalkingPct=+0.5 // division of base running speed when walking is applied
-		CrouchedPct=+0.4 // division of base running speed when crouching is applied
+		CrouchedPct=+0.3 // division of base running speed when crouching is applied
+		bCanCrouch=true // enable crouching
 
 		bCanDoubleJump=false // removes double jump
 		MaxMultiJump=0 // removes double jump
