@@ -11,7 +11,7 @@ var Rotator TorchDesiredRotation; // takes new Rot of player's view, for delayin
 
 var PlayerController MyController; // hold ref to current PC, set in Postbeginplay
 
-var amGrabCrate CurrentlyHeldObject; // Keeps track of held object
+var amGrabObject CurrentlyHeldObject; // Keeps track of held object
 var float ThrowForce; // Force applied when throwing held object
 
 
@@ -85,16 +85,16 @@ event SetWalking( bool bNewIsWalking )
 
 simulated function StartFire(byte FireModeNum)
 	{
-		local amGrabCrate HitActor;
+		local amGrabObject HitActor;
 		if (FireModeNum == 0) 
 		{
-			HitActor = amGrabCrate(amHUD(MyController.myHUD).HitActor); // run trace to find actor in the players crosshair
+			HitActor = amGrabObject(amHUD(MyController.myHUD).HitActor); // run trace to find actor in the players crosshair
 
-			if(HitActor.IsA('amGrabCrate')) // check that hitactor is valid grab object
+			if(HitActor.IsA('amGrabObject')) // check that hitactor is valid grab object
 			{
 				HitActor.ToggleGrab(); // run grab func from amGrabCrate
 				CurrentlyHeldObject = HitActor; // get reference to held object
-				self.GoToState('CarryingObject'); // Tell the player to go into the carryingobject state
+				self.GoToState('CarryingCrate'); // Tell the player to go into the CarryingCrate state
 			}
 		}
 
@@ -113,12 +113,12 @@ simulated function StopFire(byte FireModeNum)
 	}
 
 
-	state CarryingObject
+	state CarryingCrate
 		{
 
 			simulated function StartFire(byte FireModeNum) // This basically overwrites the shoot mechanism while in this state
 			{
-				local amGrabCrate ThrownObject; // This is a temporary way of remembering which object we're throwing
+				local amGrabObject ThrownObject; // This is a temporary way of remembering which object we're throwing
 				if (FireModeNum == 1)
 				{
 					if (CurrentlyHeldObject != none)

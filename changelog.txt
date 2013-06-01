@@ -32,3 +32,8 @@
 		
 26/05	- Added code for crouching, from UTPlayerInput (amPawn, amPlayerInput, DefaultInput.ini)
 		- Added code for leaning, adjusted from code uploaded on forums by 'Grosie' (amPlayerInput, amPlayerController, DefaultInput.ini)
+		
+01/06	- Added amGrabObject abstract class to form a hierarchy for all grabbable objects (amGrabObject)
+		- Moved code from amGrabCrate to amGrabObject, changed types & references in amPawn to match change (amPawn, amGrabCrate, amGrabObject)
+		- Added amGrabDoor derived from amGrabObject with dev_door mesh (amGrabDoor)
+		- Changed types in amPawn to match new classes (amPawn)
