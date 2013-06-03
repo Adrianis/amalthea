@@ -13,7 +13,8 @@ class amGrabObject extends KActor
 	var PhysicalMaterial HighFrictionMat;
 	var PhysicalMaterial LowFrictionMat;
 	var() float Mass;
-
+	var float DoorOpenForce;
+	
 function PreBeginPlay() 
 	{
 		local RB_BodySetup bodySetup;
@@ -51,24 +52,27 @@ function bool IsReachable()
 
 function ToggleGrab() 
 	{
-	  local Quat PawnQuat, InvPawnQuat, ActorQuat;
+		local Quat PawnQuat, InvPawnQuat, ActorQuat;
+		
+		if (self.IsA('amGrabCrate'))
+		{
+			if(IsReachable()) {
+			  // Make sure to clear the bump timer event so it doesn't try to apply high friction
+			  if(IsTimerActive(NameOf(ApplyHighFriction)))
+				ClearTimer(NameOf(ApplyHighFriction));
 
-		if(IsReachable()) {
-		  // Make sure to clear the bump timer event so it doesn't try to apply high friction
-		  if(IsTimerActive(NameOf(ApplyHighFriction)))
-			ClearTimer(NameOf(ApplyHighFriction));
+			  // Don't let player throw the crate too high
+			  bLimitMaxPhysicsVelocity = true;
+			  MaxPhysicsVelocity = 300;
 
-		  // Don't let player throw the crate too high
-		  bLimitMaxPhysicsVelocity = true;
-		  MaxPhysicsVelocity = 300;
+			  CollisionComponent.SetPhysMaterialOverride(LowFrictionMat);
+			  PhysicsGrabber.GrabComponent(CollisionComponent, 'None', CollisionComponent.Bounds.Origin, true);
 
-		  CollisionComponent.SetPhysMaterialOverride(LowFrictionMat);
-		  PhysicsGrabber.GrabComponent(CollisionComponent, 'None', CollisionComponent.Bounds.Origin, true);
-
-		  PawnQuat = QuatFromRotator(Rotation);
-		  InvPawnQuat = QuatInvert(PawnQuat);
-		  ActorQuat = QuatFromRotator(Rotation);
-		  HoldOrientation = QuatProduct(InvPawnQuat, ActorQuat);
+			  PawnQuat = QuatFromRotator(Rotation);
+			  InvPawnQuat = QuatInvert(PawnQuat);
+			  ActorQuat = QuatFromRotator(Rotation);
+			  HoldOrientation = QuatProduct(InvPawnQuat, ActorQuat);
+			}
 		}
 	}
 
@@ -86,26 +90,29 @@ simulated function Tick(float DeltaTime)
 
 		if(GrabbedCrate()) 
 		{
-			if(!CanStillHold() || PlayerBasedOnMe()) { Drop(); return; }
+			if (self.IsA('amGrabCrate'))
+			{
+				if(!CanStillHold() || PlayerBasedOnMe()) { Drop(); return; }
 
-			GetPlayerPawn().GetActorEyesViewPoint(PlayerViewPointLoc, PlayerViewPointRot);
- 			StartLoc = PlayerViewPointLoc;
-			Aim = PlayerViewPointRot;
+				GetPlayerPawn().GetActorEyesViewPoint(PlayerViewPointLoc, PlayerViewPointRot);
+ 				StartLoc = PlayerViewPointLoc;
+				Aim = PlayerViewPointRot;
 
-			// Don't let crate get too close to player's feet when looking down
-			if(Aim.Pitch > 17000 && Aim.Pitch < 56000) { Aim.Pitch = 56000; }
+				// Don't let crate get too close to player's feet when looking down
+				if(Aim.Pitch > 17000 && Aim.Pitch < 56000) { Aim.Pitch = 56000; }
 
-			// Smooth the crate into a firm grip
-			if(InterpAlpha < 100) { InterpAlpha += 0.8; }
+				// Smooth the crate into a firm grip
+				if(InterpAlpha < 100) { InterpAlpha += 0.8; }
 
-			NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));
-			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha);
-			PhysicsGrabber.SetLocation(NewHandlePos);
+				NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));
+				NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha);
+				PhysicsGrabber.SetLocation(NewHandlePos);
 
-			PawnQuat = QuatFromRotator(PlayerViewPointRot);
-			NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
-			PhysicsGrabber.SetOrientation(NewHandleOrientation);
-		  }
+				PawnQuat = QuatFromRotator(PlayerViewPointRot);
+				NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
+				PhysicsGrabber.SetOrientation(NewHandleOrientation);
+			}
+		}
 	}
 
 function bool GrabbedCrate() 
@@ -159,6 +166,42 @@ private function bool PlayerBasedOnMe()
 	  return GetPlayerPawn().Base == Self;
 	}
 
+
+/***********************
+ * Door Specific
+ * *********************/ 
+
+function ProcessDoorMove(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot)
+{
+	//local Vector vMove;
+	if (self.IsA('amGrabDoor'))
+	{
+		/*if ((ViewRotation+DeltaRot) != ViewRotation)
+		{
+			vMove = vector(ViewRotation += DeltaRot);
+			self.ApplyImpulse(vMove, DoorOpenForce, self.Location);
+			`log("DeltaRotValue: "@DeltaRot.Pitch);
+		}*/
+
+		//REF ONLY // ApplyImpulse(Vector(Controller.Rotation), ThrowForce, ThrownObject.Location);
+		
+		if ((DeltaRot.Pitch + ViewRotation.Pitch) > ViewRotation.Pitch)
+		{
+			`log("UP");
+			self.ApplyImpulse(Vector(PlayerPawn.Controller.Rotation), DoorOpenForce, self.Location);
+		}
+		else if ((DeltaRot.Pitch + ViewRotation.Pitch) < ViewRotation.Pitch)
+		{
+			`log("DOWN");
+			self.ApplyImpulse(-Vector(PlayerPawn.Controller.Rotation), DoorOpenForce, self.Location);
+		}
+	}
+}
+
+/************************/
+
+
+
 defaultproperties
 	{
 
@@ -184,6 +227,7 @@ defaultproperties
 		bPawnCanBaseOn=true
 		bSafeBaseIfAsleep=false
 		Mass=100
+		DoorOpenForce=6000.00
   
 		HighFrictionMat=PhysicalMaterial'timorem_devpak.Materials.HighFriction'
 		LowFrictionMat=PhysicalMaterial'timorem_devpak.Materials.LowFriction'

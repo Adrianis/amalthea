@@ -114,6 +114,43 @@ state PlayerWalking
 /********************************************/
 
 
+/****************************************
+ * Door Grabbing control 
+ * **************************************/
+
+state GrabbedDoor extends PlayerWalking
+{
+	function ProcessViewRotation(float DeltaTime, out Rotator out_ViewRotation, Rotator DeltaRot)
+	{
+		
+		amPawn(Pawn).CurrentlyHeldObject.ProcessDoorMove(DeltaTime, out_ViewRotation, DeltaRot);
+		
+		/*if( PlayerCamera != None )
+		{
+			PlayerCamera.ProcessViewRotation( DeltaTime, out_ViewRotation, DeltaRot );
+		}
+
+		if ( Pawn != None )
+		{	// Give the Pawn a chance to modify DeltaRot (limit view for ex.)
+			Pawn.ProcessViewRotation( DeltaTime, out_ViewRotation, DeltaRot );
+		}
+		else
+		{
+			// If Pawn doesn't exist, limit view
+
+			// Add Delta Rotation
+			out_ViewRotation	+= DeltaRot;
+			out_ViewRotation	 = LimitViewRotation(out_ViewRotation, -16384, 16383 );
+		}*/
+	}
+}
+
+
+
+
+
+
+
 exec function ToggleTorch()
 	{
 		amPawn(Pawn).ToggleTorch();	

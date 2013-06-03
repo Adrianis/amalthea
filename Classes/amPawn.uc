@@ -118,44 +118,51 @@ simulated function StopFire(byte FireModeNum)
 	}
 
 
-	state CarryingCrate
+state CarryingCrate
+{
+
+	simulated function StartFire(byte FireModeNum) // This basically overwrites the shoot mechanism while in this state
+	{
+		local amGrabObject ThrownObject; // This is a temporary way of remembering which object we're throwing
+		if (FireModeNum == 1)
 		{
-
-			simulated function StartFire(byte FireModeNum) // This basically overwrites the shoot mechanism while in this state
+			if (CurrentlyHeldObject != none)
 			{
-				local amGrabObject ThrownObject; // This is a temporary way of remembering which object we're throwing
-				if (FireModeNum == 1)
-				{
-					if (CurrentlyHeldObject != none)
-					{
-						ThrownObject = CurrentlyHeldObject;
-						CurrentlyHeldObject.Drop(); // This sets CurrentlyHeldObject to be none, hence why we need ThrownObject
-						ThrownObject.ApplyImpulse(Vector(Controller.Rotation), ThrowForce, ThrownObject.Location); // Launches the object in the direction the player is facing
-						CurrentlyHeldObject = none; // remove reference to held object, prevent continued remote throwing
-					}
-				}
+				ThrownObject = CurrentlyHeldObject;
+				CurrentlyHeldObject.Drop(); // This sets CurrentlyHeldObject to be none, hence why we need ThrownObject
+				ThrownObject.ApplyImpulse(Vector(Controller.Rotation), ThrowForce, ThrownObject.Location); // Launches the object in the direction the player is facing
+				CurrentlyHeldObject = none; // remove reference to held object, prevent continued remote throwing
 			}
+		}
+	}
 
-			event BeginState(name PreviousStateName) // This is called when a player first enters the state
-			{
+	event BeginState(name PreviousStateName) // This is called when a player first enters the state
+	{
 				
-			}
+	}
 
-			event EndState(name NextStateName)
-			{
-				if (CurrentlyHeldObject != none)
-				{
-					CurrentlyHeldObject.Drop();
-					CurrentlyHeldObject = none;
-				}
-			}
-		}
-
-
-	state GrabbedDoor
+	event EndState(name NextStateName)
+	{
+		if (CurrentlyHeldObject != none)
 		{
-			
+			CurrentlyHeldObject.Drop();
+			CurrentlyHeldObject = none;
 		}
+	}
+}
+
+
+state GrabbedDoor
+{
+	event BeginState(name PreviousStateName)
+	{
+		MyController.GotoState('GrabbedDoor');
+	}
+	event EndState(name NextStateName)
+	{
+		MyController.GotoState('PlayerWalking');
+	}
+}
 
 /*********************************/
 
