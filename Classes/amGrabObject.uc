@@ -84,27 +84,28 @@ simulated function Tick(float DeltaTime)
 		local Rotator Aim, PlayerViewPointRot;
 		local Quat NewHandleOrientation, PawnQuat;
 
-		if(GrabbedCrate()) {
-		if(!CanStillHold() || PlayerBasedOnMe()) { Drop(); return; }
+		if(GrabbedCrate()) 
+		{
+			if(!CanStillHold() || PlayerBasedOnMe()) { Drop(); return; }
 
-		GetPlayerPawn().GetActorEyesViewPoint(PlayerViewPointLoc, PlayerViewPointRot);
- 		StartLoc = PlayerViewPointLoc;
-		Aim = PlayerViewPointRot;
+			GetPlayerPawn().GetActorEyesViewPoint(PlayerViewPointLoc, PlayerViewPointRot);
+ 			StartLoc = PlayerViewPointLoc;
+			Aim = PlayerViewPointRot;
 
-		// Don't let crate get too close to player's feet when looking down
-		if(Aim.Pitch > 17000 && Aim.Pitch < 56000) { Aim.Pitch = 56000; }
+			// Don't let crate get too close to player's feet when looking down
+			if(Aim.Pitch > 17000 && Aim.Pitch < 56000) { Aim.Pitch = 56000; }
 
-		// Smooth the crate into a firm grip
-		if(InterpAlpha < 100) { InterpAlpha += 0.8; }
+			// Smooth the crate into a firm grip
+			if(InterpAlpha < 100) { InterpAlpha += 0.8; }
 
-		NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));
-		NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha);
-		PhysicsGrabber.SetLocation(NewHandlePos);
+			NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));
+			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha);
+			PhysicsGrabber.SetLocation(NewHandlePos);
 
-		PawnQuat = QuatFromRotator(PlayerViewPointRot);
-		NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
-		PhysicsGrabber.SetOrientation(NewHandleOrientation);
-	  }
+			PawnQuat = QuatFromRotator(PlayerViewPointRot);
+			NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
+			PhysicsGrabber.SetOrientation(NewHandleOrientation);
+		  }
 	}
 
 function bool GrabbedCrate() 

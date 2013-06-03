@@ -90,11 +90,17 @@ simulated function StartFire(byte FireModeNum)
 		{
 			HitActor = amGrabObject(amHUD(MyController.myHUD).HitActor); // run trace to find actor in the players crosshair
 
-			if(HitActor.IsA('amGrabObject')) // check that hitactor is valid grab object
+			if(HitActor.IsA('amGrabCrate')) // check that hitactor is valid grab object
 			{
-				HitActor.ToggleGrab(); // run grab func from amGrabCrate
+				HitActor.ToggleGrab(); // run grab func from amGrabObject
 				CurrentlyHeldObject = HitActor; // get reference to held object
 				self.GoToState('CarryingCrate'); // Tell the player to go into the CarryingCrate state
+			}
+			else if (HitActor.IsA('amGrabDoor'))
+			{
+				HitActor.ToggleGrab(); // run grab func from amGrabObject
+				CurrentlyHeldObject = HitActor; // get reference to held object
+				self.GoToState('GrabbedDoor'); // Tell the player to go into the CarryingCrate state
 			}
 		}
 
@@ -109,7 +115,6 @@ simulated function StopFire(byte FireModeNum)
 			CurrentlyHeldObject = none; // remove reference to held object
 			self.GotoState('Auto'); // reset to default state
 		}
-		
 	}
 
 
@@ -138,10 +143,19 @@ simulated function StopFire(byte FireModeNum)
 
 			event EndState(name NextStateName)
 			{
-				
+				if (CurrentlyHeldObject != none)
+				{
+					CurrentlyHeldObject.Drop();
+					CurrentlyHeldObject = none;
+				}
 			}
 		}
 
+
+	state GrabbedDoor
+		{
+			
+		}
 
 /*********************************/
 
