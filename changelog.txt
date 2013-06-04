@@ -37,3 +37,8 @@
 		- Moved code from amGrabCrate to amGrabObject, changed types & references in amPawn to match change (amPawn, amGrabCrate, amGrabObject)
 		- Added amGrabDoor derived from amGrabObject with dev_door mesh (amGrabDoor)
 		- Changed types in amPawn to match new classes (amPawn)
+		
+04/06	- Added code for interacting with doors, intercepts view rotation in PCont to get values for code to execute in amGrabObject.ProcessDoorMove (amGrabOjbect, amPawn, amPlayerController)
+		- Added amDevDoor to hold mesh for door, derived from amGrabDoor (amDevDoor)
+		
+05/06	- Changed door control code to correctly interpret direction / force applied from rotation change (amGrabObject)

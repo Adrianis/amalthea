@@ -13,7 +13,6 @@ class amGrabObject extends KActor
 	var PhysicalMaterial HighFrictionMat;
 	var PhysicalMaterial LowFrictionMat;
 	var() float Mass;
-	var float DoorOpenForce;
 	
 function PreBeginPlay() 
 	{
@@ -173,27 +172,12 @@ private function bool PlayerBasedOnMe()
 
 function ProcessDoorMove(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot)
 {
-	//local Vector vMove;
 	if (self.IsA('amGrabDoor'))
 	{
-		/*if ((ViewRotation+DeltaRot) != ViewRotation)
+		if ((ViewRotation+DeltaRot) != ViewRotation) // check if rotation has changed
 		{
-			vMove = vector(ViewRotation += DeltaRot);
-			self.ApplyImpulse(vMove, DoorOpenForce, self.Location);
-			`log("DeltaRotValue: "@DeltaRot.Pitch);
-		}*/
-
-		//REF ONLY // ApplyImpulse(Vector(Controller.Rotation), ThrowForce, ThrownObject.Location);
-		
-		if ((DeltaRot.Pitch + ViewRotation.Pitch) > ViewRotation.Pitch)
-		{
-			`log("UP");
-			self.ApplyImpulse(Vector(PlayerPawn.Controller.Rotation), DoorOpenForce, self.Location);
-		}
-		else if ((DeltaRot.Pitch + ViewRotation.Pitch) < ViewRotation.Pitch)
-		{
-			`log("DOWN");
-			self.ApplyImpulse(-Vector(PlayerPawn.Controller.Rotation), DoorOpenForce, self.Location);
+			// apply impulse using rotation change as force, player view rot as direction
+			self.ApplyImpulse(vector(ViewRotation), DeltaRot.Pitch, PlayerPawn.Location);
 		}
 	}
 }
@@ -227,7 +211,6 @@ defaultproperties
 		bPawnCanBaseOn=true
 		bSafeBaseIfAsleep=false
 		Mass=100
-		DoorOpenForce=6000.00
   
 		HighFrictionMat=PhysicalMaterial'timorem_devpak.Materials.HighFriction'
 		LowFrictionMat=PhysicalMaterial'timorem_devpak.Materials.LowFriction'
