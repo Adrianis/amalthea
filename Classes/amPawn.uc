@@ -130,7 +130,7 @@ state CarryingCrate
 			{
 				ThrownObject = CurrentlyHeldObject;
 				CurrentlyHeldObject.Drop(); // This sets CurrentlyHeldObject to be none, hence why we need ThrownObject
-				ThrownObject.ApplyImpulse(Vector(Controller.Rotation), ThrowForce, ThrownObject.Location); // Launches the object in the direction the player is facing
+				ThrownObject.ApplyImpulse(Vector(Controller.Rotation), ThrowForce, self.Location); // Launches the object in the direction the player is facing
 				CurrentlyHeldObject = none; // remove reference to held object, prevent continued remote throwing
 			}
 		}

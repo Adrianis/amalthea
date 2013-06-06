@@ -172,12 +172,17 @@ private function bool PlayerBasedOnMe()
 
 function ProcessDoorMove(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot)
 {
+	local Vector X, Y, Z;
+
 	if (self.IsA('amGrabDoor'))
 	{
 		if ((ViewRotation+DeltaRot) != ViewRotation) // check if rotation has changed
 		{
+			GetAxes(ViewRotation, X, Y, Z);
+
 			// apply impulse using rotation change as force, player view rot as direction
-			self.ApplyImpulse(vector(ViewRotation), DeltaRot.Pitch, PlayerPawn.Location);
+			self.ApplyImpulse(X, DeltaRot.Pitch, PlayerPawn.Location);
+			self.ApplyImpulse(Y, DeltaRot.Yaw, PlayerPawn.Location);
 		}
 	}
 }
