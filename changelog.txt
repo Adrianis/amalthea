@@ -44,3 +44,6 @@
 05/06	- Changed door control code to correctly interpret direction / force applied from rotation change (amGrabObject)
 
 06/06	- Changed door control code to deal with controllers pitch/yaw changes correctly depending on the players position relevant to the door (amGrabObject)
+
+12/06	- Changed door control code to deal with distance of door from player, check is made in amPlayerController.ProcessViewRotation (amPlayerController, amGrabDoor, amPawn)
+		

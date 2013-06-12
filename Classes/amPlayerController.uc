@@ -122,12 +122,24 @@ state GrabbedDoor extends PlayerWalking
 {
 	function ProcessViewRotation(float DeltaTime, out Rotator out_ViewRotation, Rotator DeltaRot)
 	{
-		// send the rotation change data over to ProcessDoorMove in amGrabObject
-		amPawn(Pawn).CurrentlyHeldObject.ProcessDoorMove(DeltaTime, out_ViewRotation, DeltaRot);
+		// Need to check at this point if the object is in range, to prevent issue where with only 1 check 
+		//  at the initial grab, you can walk away from the object and still move it when out of range
+
+		// Also note that it needs to use the VSize check manually rather than using IsReachable() as simply using that function 
+		//  produces a bug where the direction for yaw force is reversed when standing to the -y of the object
+
+		if (VSize(amPawn(Pawn).CurrentlyHeldObject.Location - Pawn.Location) < amPawn(Pawn).CurrentlyHeldObject.HoldDistanceMax)
+		{
+			// send the rotation change data over to ProcessDoorMove in amGrabObject
+			amPawn(Pawn).CurrentlyHeldObject.ProcessDoorMove(DeltaTime, out_ViewRotation, DeltaRot);
+		}
+		else 
+		{
+			// continue moving player's view with no movement for the object
+			super.ProcessViewRotation(DeltaTime, out_ViewRotation, DeltaRot);
+		}
 	}
 }
-
-
 
 
 

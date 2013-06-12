@@ -19,11 +19,12 @@ simulated function PostBeginPlay()
 	{
 
 	// TORCH STUFF ----------------------------------------
-		Torch = Spawn(class'amTorch', self); // spawn the torch on the player pawn
-		Torch.SetBase(self); // set the torch base to the player pawn
-		Torch.LightComponent.SetEnabled(bIsTorchOn); // enable/disable light component of torch on startup
+		Torch = Spawn(class'amTorch', self);
+		Torch.SetBase(self);
+		Torch.LightComponent.SetEnabled(bIsTorchOn);
+	//	---------------------------------------------------
 
-		MyController = GetALocalPlayerController(); // grab ref to current PC
+		MyController = GetALocalPlayerController();
 
 		super.PostBeginPlay();
 	}
@@ -42,21 +43,11 @@ event UpdateEyeHeight(float DeltaTime)
 		Torch.SetRotation(TorchCurrentRotation); // set the torch rot to interped val for current rot
 	}
 
-
-// turns torch on/off, triggered by key set in DefaultInput, normally F
 simulated function ToggleTorch()
 	{
-		bIsTorchOn = !bIsTorchOn; // set it to what it was not!
-		Torch.LightComponent.SetEnabled(bIsTorchOn); // enable/disable light comp
+		bIsTorchOn = !bIsTorchOn; 
+		Torch.LightComponent.SetEnabled(bIsTorchOn);
 	}
-
-
-
-
-/*event TakeDamage(int DamageAmount, Controller EventInstigator, vector HitLocation, vector Momentum, class<DamageType> DamageType, optional TraceHitInfo HitInfo, optional Actor DamageCauser)
-	{
-	  Super.TakeDamage(DamageAmount, EventInstigator, HitLocation, Momentum, DamageType, HitInfo, DamageCauser);
-	}*/
 
 
 /*******************************

@@ -53,6 +53,9 @@ function ToggleGrab()
 	{
 		local Quat PawnQuat, InvPawnQuat, ActorQuat;
 		
+		bLimitMaxPhysicsVelocity = true;
+		MaxPhysicsVelocity = 450;
+
 		if (self.IsA('amGrabCrate'))
 		{
 			if(IsReachable()) {
@@ -60,9 +63,7 @@ function ToggleGrab()
 			  if(IsTimerActive(NameOf(ApplyHighFriction)))
 				ClearTimer(NameOf(ApplyHighFriction));
 
-			  // Don't let player throw the crate too high
-			  bLimitMaxPhysicsVelocity = true;
-			  MaxPhysicsVelocity = 300;
+
 
 			  CollisionComponent.SetPhysMaterialOverride(LowFrictionMat);
 			  PhysicsGrabber.GrabComponent(CollisionComponent, 'None', CollisionComponent.Bounds.Origin, true);
