@@ -155,7 +155,18 @@ state GrabbedDoor
 	}
 }
 
-/*********************************/
+
+
+/*********************************
+	Needed to pass players view rotation change data to
+	amGrabDoor, and keep the amGrabObject type for CurrentlyHeldObject
+	**********/
+function PassOnRotationData(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot)
+{
+	amGrabDoor(CurrentlyHeldObject).ProcessDoorMove(DeltaTime, ViewRotation, DeltaRot);
+}
+/******************************************/
+
 
 
 

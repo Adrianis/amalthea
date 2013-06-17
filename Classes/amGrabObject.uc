@@ -13,7 +13,7 @@ class amGrabObject extends KActor
 	var PhysicalMaterial HighFrictionMat;
 	var PhysicalMaterial LowFrictionMat;
 	var() float Mass;
-	var() float MaxMovementForce; // limits amount of rotation pitch/yaw to apply as a force for door movement
+	
 	
 function PreBeginPlay() 
 	{
@@ -167,43 +167,6 @@ private function bool PlayerBasedOnMe()
 	  return GetPlayerPawn().Base == Self;
 	}
 
-
-/***********************
- * Door Specific
- * *********************/ 
-
-function ProcessDoorMove(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot)
-{
-	local Vector X, Y, Z;
-
-	if (self.IsA('amGrabDoor'))
-	{
-		if ((ViewRotation+DeltaRot) != ViewRotation) // check if rotation has changed
-		{
-			GetAxes(ViewRotation, X, Y, Z);
-
-			// limit max force applied to door
-			if (DeltaRot.Pitch > MaxMovementForce) {
-				DeltaRot.Pitch = MaxMovementForce;
-			}
-			else if (DeltaRot.Pitch < -MaxMovementForce) {
-				DeltaRot.Pitch = -MaxMovementForce;
-			}
-
-			if (DeltaRot.Yaw > MaxMovementForce) {
-				DeltaRot.Yaw = MaxMovementForce;
-			}
-			else if (DeltaRot.Yaw < -MaxMovementForce) {
-				DeltaRot.Yaw = -MaxMovementForce;
-			}
-
-			// apply impulse using rotation change as force, player view rot as direction
-			self.ApplyImpulse(X, DeltaRot.Pitch, PlayerPawn.Location);
-			self.ApplyImpulse(Y, DeltaRot.Yaw, PlayerPawn.Location);
-		}
-	}
-}
-
 /************************/
 
 
@@ -233,7 +196,6 @@ defaultproperties
 		bPawnCanBaseOn=true
 		bSafeBaseIfAsleep=false
 		Mass=100
-		MaxMovementForce=100.00
 
   
 		HighFrictionMat=PhysicalMaterial'timorem_devpak.Materials.HighFriction'

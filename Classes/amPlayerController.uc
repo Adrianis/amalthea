@@ -130,8 +130,8 @@ state GrabbedDoor extends PlayerWalking
 
 		if (VSize(amPawn(Pawn).CurrentlyHeldObject.Location - Pawn.Location) < amPawn(Pawn).CurrentlyHeldObject.HoldDistanceMax)
 		{
-			// send the rotation change data over to ProcessDoorMove in amGrabObject
-			amPawn(Pawn).CurrentlyHeldObject.ProcessDoorMove(DeltaTime, out_ViewRotation, DeltaRot);
+			// send the rotation change data over to ProcessDoorMove in amGrabObject via amPawn
+			amPawn(Pawn).PassOnRotationData(DeltaTime, out_ViewRotation, DeltaRot);
 		}
 		else 
 		{
