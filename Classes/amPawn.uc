@@ -179,6 +179,11 @@ defaultproperties
 		EyeHeight=60.0
 		CrouchHeight=35.0
 
+		JumpZ=370.0
+
+		ViewPitchMin=-12000
+		ViewPitchMax=15000
+
 		GroundSpeed=600.0 // base running speed
 		WalkingPct=+0.5 // division of base running speed when walking is applied
 		CrouchedPct=+0.3 // division of base running speed when crouching is applied

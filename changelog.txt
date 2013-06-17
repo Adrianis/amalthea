@@ -47,3 +47,5 @@
 
 12/06	- Changed door control code to deal with distance of door from player, check is made in amPlayerController.ProcessViewRotation (amPlayerController, amGrabDoor, amPawn)
 		
+17/06	- Changed door control to limit max amount of force applied to it, also changed values for Mass in derived door class (amGrabObject, amGrabDoor)
+		- Updated amPawn with some more default property overrides to tweak jumping & looking
