@@ -1,10 +1,10 @@
-class amTimWoodCrate extends amGrabCrate
+class amWoodenChest extends amGrabCrate
 	placeable;
 
 DefaultProperties
 {
 	Begin Object Name=StaticMeshComponent0
-  		StaticMesh=StaticMesh'Timorem_Props.WoodenCrate'
+  		StaticMesh=StaticMesh'Timorem_Props.WoodenChest'
 	End Object
 	Components.Add(StaticMeshComponent0)
 }

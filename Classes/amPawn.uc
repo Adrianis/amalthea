@@ -81,21 +81,13 @@ simulated function StartFire(byte FireModeNum)
 		{
 			HitActor = amGrabObject(amHUD(MyController.myHUD).HitActor); // run trace to find actor in the players crosshair
 
-			if(HitActor.IsA('amGrabCrate')) // check that hitactor is valid grab object
+			if(HitActor.IsA('amGrabObject')) // check that hitactor is valid grab object
 			{
 				HitActor.ToggleGrab(); // run grab func from amGrabObject
 				CurrentlyHeldObject = HitActor; // get reference to held object
-				self.GoToState('CarryingCrate'); // Tell the player to go into the CarryingCrate state
-			}
-			else if (HitActor.IsA('amGrabDoor'))
-			{
-				HitActor.ToggleGrab(); // run grab func from amGrabObject
-				CurrentlyHeldObject = HitActor; // get reference to held object
-				self.GoToState('GrabbedDoor'); // Tell the player to go into the CarryingCrate state
+				self.GoToState('CarryingObject'); // Tell the player to go into the CarryingObject state
 			}
 		}
-
-		
 	}
 
 simulated function StopFire(byte FireModeNum)
@@ -109,7 +101,7 @@ simulated function StopFire(byte FireModeNum)
 	}
 
 
-state CarryingCrate
+state CarryingObject
 {
 
 	simulated function StartFire(byte FireModeNum) // This basically overwrites the shoot mechanism while in this state
@@ -129,29 +121,20 @@ state CarryingCrate
 
 	event BeginState(name PreviousStateName) // This is called when a player first enters the state
 	{
-				
+		if (CurrentlyHeldObject.IsA('amGrabDoor'))
+			MyController.GotoState('GrabbedDoor');
 	}
 
 	event EndState(name NextStateName)
 	{
+		// need to not check if it's a door, as the reference may already be none, and the PC needs to go back to normal anyway
+		MyController.GotoState('PlayerWalking'); 
+
 		if (CurrentlyHeldObject != none)
 		{
 			CurrentlyHeldObject.Drop();
 			CurrentlyHeldObject = none;
 		}
-	}
-}
-
-
-state GrabbedDoor
-{
-	event BeginState(name PreviousStateName)
-	{
-		MyController.GotoState('GrabbedDoor');
-	}
-	event EndState(name NextStateName)
-	{
-		MyController.GotoState('PlayerWalking');
 	}
 }
 

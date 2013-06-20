@@ -135,8 +135,8 @@ state GrabbedDoor extends PlayerWalking
 		}
 		else 
 		{
-			// continue moving player's view with no movement for the object
-			super.ProcessViewRotation(DeltaTime, out_ViewRotation, DeltaRot);
+			// exit this state if the door is out of range
+			self.GotoState('PlayerWalking');
 		}
 	}
 }

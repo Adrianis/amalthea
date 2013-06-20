@@ -48,5 +48,9 @@
 12/06	- Changed door control code to deal with distance of door from player, check is made in amPlayerController.ProcessViewRotation (amPlayerController, amGrabDoor, amPawn)
 		
 17/06	- Changed door control to limit max amount of force applied to it, also changed values for Mass in derived door class (amGrabObject, amGrabDoor)
-		- Updated amPawn with some more default property overrides to tweak jumping & looking
+		- Updated amPawn with some more default property overrides to tweak jumping & looking [inc. jumping on top of boxes!] (amPawn)
 		- Updated code for handling grab objects in amPawn, as well as the controller, in order to sort out the class hierarchy for amGrabOject's (amPawn, amPlayerController, amGrabObject, amGrabDoor)
+		
+20/06	- Added new classes for new props, amWoodenCrate, amWoodenChest, amWoodenBarrel, amSecurityDoor
+		- Changes to object handling in Pawn & PC to allow throwing doors & fix issue with grabbing doors when moving away from/toward them (amPawn, amPlayerController)
+		
