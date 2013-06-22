@@ -7,4 +7,6 @@ DefaultProperties
   		StaticMesh=StaticMesh'Timorem_Props.WoodenCrate'
 	End Object
 	Components.Add(StaticMeshComponent0)
+
+	Mass=13
 }

@@ -26,8 +26,8 @@ function ProcessDoorMove(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot
 		}
 
 		// apply impulse using rotation change as force, player view rot as direction
-		self.ApplyImpulse(X, DeltaRot.Pitch, PlayerPawn.Location);
-		self.ApplyImpulse(Y, DeltaRot.Yaw, PlayerPawn.Location);
+		self.ApplyImpulse(X, DeltaRot.Pitch*15 / Mass, PlayerPawn.Location);
+		self.ApplyImpulse(Y, DeltaRot.Yaw*15 / Mass, PlayerPawn.Location);
 	}
 }
 
@@ -37,6 +37,6 @@ DefaultProperties
 {	
 	HoldDistanceMax=250.0
 
-	Mass=10000
-	MaxMovementForce=300.00
+	Mass=40
+	MaxMovementForce=1000.00
 }

@@ -35,12 +35,12 @@ event UpdateEyeHeight(float DeltaTime)
 
 
 	// TORCH SWING DELAY ------------------------------
-		TorchDesiredRotation = Controller.Rotation; // get actual rot as desired rot
-		if (TorchCurrentRotation != TorchDesiredRotation) // assuming current rot is not the desired rot
+		TorchDesiredRotation = Controller.Rotation; 
+		if (TorchCurrentRotation != TorchDesiredRotation) 
 		{
-			TorchCurrentRotation = RInterpTo(TorchCurrentRotation, TorchDesiredRotation, DeltaTime, 10); // interp value for current rot against desired rot
+			TorchCurrentRotation = RInterpTo(TorchCurrentRotation, TorchDesiredRotation, DeltaTime, 10);
 		}
-		Torch.SetRotation(TorchCurrentRotation); // set the torch rot to interped val for current rot
+		Torch.SetRotation(TorchCurrentRotation); 
 	}
 
 simulated function ToggleTorch()
@@ -79,13 +79,13 @@ simulated function StartFire(byte FireModeNum)
 		local amGrabObject HitActor;
 		if (FireModeNum == 0) 
 		{
-			HitActor = amGrabObject(amHUD(MyController.myHUD).HitActor); // run trace to find actor in the players crosshair
+			HitActor = amGrabObject(amHUD(MyController.myHUD).HitActor);
 
-			if(HitActor.IsA('amGrabObject')) // check that hitactor is valid grab object
+			if(HitActor.IsA('amGrabObject'))
 			{
-				HitActor.ToggleGrab(); // run grab func from amGrabObject
-				CurrentlyHeldObject = HitActor; // get reference to held object
-				self.GoToState('CarryingObject'); // Tell the player to go into the CarryingObject state
+				HitActor.ToggleGrab(); 
+				CurrentlyHeldObject = HitActor; 
+				self.GoToState('CarryingObject');
 			}
 		}
 	}
@@ -94,9 +94,9 @@ simulated function StopFire(byte FireModeNum)
 	{
 		if (FireModeNum == 0) 
 		{
-			CurrentlyHeldObject.Drop(); // execute Drop func from amGrabCrate
-			CurrentlyHeldObject = none; // remove reference to held object
-			self.GotoState('Auto'); // reset to default state
+			CurrentlyHeldObject.Drop();
+			CurrentlyHeldObject = none;
+			self.GotoState('Auto');
 		}
 	}
 
@@ -104,22 +104,20 @@ simulated function StopFire(byte FireModeNum)
 state CarryingObject
 {
 
-	simulated function StartFire(byte FireModeNum) // This basically overwrites the shoot mechanism while in this state
+	simulated function StartFire(byte FireModeNum)
 	{
-		local amGrabObject ThrownObject; // This is a temporary way of remembering which object we're throwing
 		if (FireModeNum == 1)
 		{
 			if (CurrentlyHeldObject != none)
 			{
-				ThrownObject = CurrentlyHeldObject;
-				CurrentlyHeldObject.Drop(); // This sets CurrentlyHeldObject to be none, hence why we need ThrownObject
-				ThrownObject.ApplyImpulse(Vector(Controller.Rotation), ThrowForce, self.Location); // Launches the object in the direction the player is facing
-				CurrentlyHeldObject = none; // remove reference to held object, prevent continued remote throwing
+				CurrentlyHeldObject.Drop();
+				CurrentlyHeldObject.ApplyImpulse(Vector(Controller.Rotation), ThrowForce / CurrentlyHeldObject.Mass, self.Location); 
+				self.GotoState('Auto');
 			}
 		}
 	}
 
-	event BeginState(name PreviousStateName) // This is called when a player first enters the state
+	event BeginState(name PreviousStateName)
 	{
 		if (CurrentlyHeldObject.IsA('amGrabDoor'))
 			MyController.GotoState('GrabbedDoor');
@@ -162,8 +160,6 @@ defaultproperties
 		Begin Object Name=CollisionCylinder
 			CollisionRadius=+0020.000000
 			CollisionHeight=+0050.000000
-			//BlockNonZeroExtent=true
-			//BlockZeroExtent=true
 			BlockActors=true
 			CollideActors=true
 			End Object
@@ -181,7 +177,7 @@ defaultproperties
 		GroundSpeed=600.0 // base running speed
 		WalkingPct=+0.5 // division of base running speed when walking is applied
 		CrouchedPct=+0.3 // division of base running speed when crouching is applied
-		bCanCrouch=true // enable crouching
+		bCanCrouch=true
 
 		bCanDoubleJump=false // removes double jump
 		MaxMultiJump=0 // removes double jump
