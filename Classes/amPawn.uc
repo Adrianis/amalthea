@@ -14,6 +14,8 @@ var PlayerController MyController; // hold ref to current PC, set in Postbeginpl
 var amGrabObject CurrentlyHeldObject; // Keeps track of held object
 var float ThrowForce; // Force applied when throwing held object
 
+var amSceneCapture SceneCap; // holds scene capture camera
+
 
 simulated function PostBeginPlay()
 	{
@@ -22,7 +24,11 @@ simulated function PostBeginPlay()
 		Torch = Spawn(class'amTorch', self);
 		Torch.SetBase(self);
 		Torch.LightComponent.SetEnabled(bIsTorchOn);
-	//	---------------------------------------------------
+
+	// SCENE CAPTURE FOR CAMERA ---------------------------
+		SceneCap = Spawn(class'amSceneCapture', self);
+		SceneCap.SetBase(self);
+	
 
 		MyController = GetALocalPlayerController();
 
