@@ -13,4 +13,6 @@ DefaultProperties
 	End Object
 	SceneCapture=SceneCapture2DComponent0
 	Components.Add(SceneCapture2DComponent0)
+	bNoDelete=false
+	bStatic=false
 }

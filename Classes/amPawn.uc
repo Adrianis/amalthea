@@ -28,7 +28,6 @@ simulated function PostBeginPlay()
 	// SCENE CAPTURE FOR CAMERA ---------------------------
 		SceneCap = Spawn(class'amSceneCapture', self);
 		SceneCap.SetBase(self);
-	
 
 		MyController = GetALocalPlayerController();
 
@@ -39,6 +38,7 @@ event UpdateEyeHeight(float DeltaTime)
 	{
 		super.UpdateEyeHeight(DeltaTime);
 
+		SceneCap.SetRotation(Controller.Rotation);
 
 	// TORCH SWING DELAY ------------------------------
 		TorchDesiredRotation = Controller.Rotation; 
@@ -46,7 +46,7 @@ event UpdateEyeHeight(float DeltaTime)
 		{
 			TorchCurrentRotation = RInterpTo(TorchCurrentRotation, TorchDesiredRotation, DeltaTime, 10);
 		}
-		Torch.SetRotation(TorchCurrentRotation); 
+		Torch.SetRotation(TorchCurrentRotation);
 	}
 
 simulated function ToggleTorch()
