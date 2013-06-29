@@ -156,7 +156,7 @@ private function UnlimitPhysicsVelocity()
 	  bLimitMaxPhysicsVelocity = false;
 	}
 
-private function Pawn GetPlayerPawn() 
+protected function Pawn GetPlayerPawn() 
 	{
 	  if(PlayerPawn == None)
 		PlayerPawn = GetALocalPlayerController().Pawn;
