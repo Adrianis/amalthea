@@ -101,7 +101,6 @@ simulated function StopFire(byte FireModeNum)
 		if (FireModeNum == 0) 
 		{
 			CurrentlyHeldObject.Drop();
-			CurrentlyHeldObject = none;
 			self.GotoState('Auto');
 		}
 	}
@@ -112,7 +111,7 @@ state CarryingObject
 
 	simulated function StartFire(byte FireModeNum)
 	{
-		if (FireModeNum == 1)
+		if (FireModeNum == 1) // check for right-click
 		{
 			if (CurrentlyHeldObject != none)
 			{
@@ -125,14 +124,22 @@ state CarryingObject
 
 	event BeginState(name PreviousStateName)
 	{
-		if (CurrentlyHeldObject.IsA('amGrabDoor'))
+		if (CurrentlyHeldObject.IsA('amGrabDoor')) {
 			MyController.GotoState('GrabbedDoor');
+			amGrabDoor(CurrentlyHeldObject).bCanAutoClose=false;
+			`log("BegineState, bCanAutoClose=false");
+		}
 	}
 
 	event EndState(name NextStateName)
 	{
 		// need to not check if it's a door, as the reference may already be none, and the PC needs to go back to normal anyway
 		MyController.GotoState('PlayerWalking'); 
+
+		if (CurrentlyHeldObject.IsA('amGrabDoor')) {
+			amGrabDoor(CurrentlyHeldObject).bCanAutoClose=true;
+			`log("EndState, bCanAutoClose=true");
+		}
 
 		if (CurrentlyHeldObject != none)
 		{

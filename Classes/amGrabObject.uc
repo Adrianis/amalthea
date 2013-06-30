@@ -18,8 +18,6 @@ class amGrabObject extends KActor
 function PreBeginPlay() 
 	{
 		local RB_BodySetup bodySetup;
-
-		PlayerPawn = GetPlayerPawn();
 	
 		if(Mass <= 0) return;
 	

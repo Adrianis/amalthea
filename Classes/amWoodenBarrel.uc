@@ -7,6 +7,6 @@ DefaultProperties
   		StaticMesh=StaticMesh'Timorem_Props.WoodenBarrel'
 	End Object
 	Components.Add(StaticMeshComponent0)
-
+	CollisionComponent=StaticMeshComponent0
 	Mass=20
 }

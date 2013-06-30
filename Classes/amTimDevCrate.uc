@@ -7,4 +7,5 @@ DefaultProperties
   		StaticMesh=StaticMesh'timorem_devpak.Dev_Crate'
 	End Object
 	Components.Add(StaticMeshComponent0)
+	CollisionComponent=StaticMeshComponent0
 }
