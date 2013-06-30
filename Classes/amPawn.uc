@@ -127,7 +127,6 @@ state CarryingObject
 		if (CurrentlyHeldObject.IsA('amGrabDoor')) {
 			MyController.GotoState('GrabbedDoor');
 			amGrabDoor(CurrentlyHeldObject).bCanAutoClose=false;
-			`log("BegineState, bCanAutoClose=false");
 		}
 	}
 
@@ -136,10 +135,8 @@ state CarryingObject
 		// need to not check if it's a door, as the reference may already be none, and the PC needs to go back to normal anyway
 		MyController.GotoState('PlayerWalking'); 
 
-		if (CurrentlyHeldObject.IsA('amGrabDoor')) {
+		if (CurrentlyHeldObject.IsA('amGrabDoor'))
 			amGrabDoor(CurrentlyHeldObject).bCanAutoClose=true;
-			`log("EndState, bCanAutoClose=true");
-		}
 
 		if (CurrentlyHeldObject != none)
 		{

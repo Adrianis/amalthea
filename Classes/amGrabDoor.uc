@@ -1,8 +1,12 @@
 class amGrabDoor extends amGrabObject;
 
-var() float MaxMovementForce; // limits amount of rotation pitch/yaw to apply as a force for door movement
-var() float DoorCloseRange; // range within which the door should close itself
-var() bool bCanAutoClose; // flag to control when the door should close itself
+/** limits amount of rotation pitch/yaw to apply as a force for door movement */
+var() float MaxMovementForce; 
+
+/** range within which the door should close itself */
+var() float DoorCloseRange;
+
+var bool bCanAutoClose; // flag to control when the door should close itself
 var Rotator RotationAtStart; // to hold the rotation of the door at the start of the game
 
 
@@ -44,6 +48,7 @@ function ProcessDoorMove(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot
 simulated function Tick(float DeltaTime)
 	{
 		local Rotator DesiredRotation;
+		local Vector ZeroMovement;
 				
 		super.Tick(DeltaTime);
 
@@ -51,8 +56,13 @@ simulated function Tick(float DeltaTime)
 		{
 			if (DoorWithinCloseRange()) 
 			{
-				DesiredRotation = RInterpTo(self.Rotation, RotationAtStart, DeltaTime, 10000);
+				ZeroMovement.X=0;
+				ZeroMovement.Y=0;
+				ZeroMovement.Z=0;
+				if(InterpAlpha < 100) { InterpAlpha += 0.8; }
+				DesiredRotation = RInterpTo(self.Rotation, RotationAtStart, DeltaTime, InterpAlpha);
 				self.CollisionComponent.SetRBRotation(DesiredRotation);
+				self.CollisionComponent.SetRBAngularVelocity(ZeroMovement);
 			}
 		}
 
