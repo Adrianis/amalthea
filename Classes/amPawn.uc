@@ -191,6 +191,8 @@ defaultproperties
 
 		bCanDoubleJump=false // removes double jump
 		MaxMultiJump=0 // removes double jump
+
+		bCanWalkOffLedges=true
 		
 	//-----------------------------
 
