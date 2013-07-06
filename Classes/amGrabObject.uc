@@ -51,69 +51,15 @@ function bool IsReachable()
 	}
 
 function ToggleGrab() 
-	{
-		local Quat PawnQuat, InvPawnQuat, ActorQuat;
-		
+	{		
 		bLimitMaxPhysicsVelocity = true;
 		MaxPhysicsVelocity = 450;
-
-		if (self.IsA('amGrabCrate'))
-		{
-			if(IsReachable()) {
-			  // Make sure to clear the bump timer event so it doesn't try to apply high friction
-			  if(IsTimerActive(NameOf(ApplyHighFriction)))
-				ClearTimer(NameOf(ApplyHighFriction));
-
-
-
-			  CollisionComponent.SetPhysMaterialOverride(LowFrictionMat);
-			  PhysicsGrabber.GrabComponent(CollisionComponent, 'None', CollisionComponent.Bounds.Origin, true);
-
-			  PawnQuat = QuatFromRotator(Rotation);
-			  InvPawnQuat = QuatInvert(PawnQuat);
-			  ActorQuat = QuatFromRotator(Rotation);
-			  HoldOrientation = QuatProduct(InvPawnQuat, ActorQuat);
-			}
-		}
 	}
 
 function Drop() 
 	{
 	  InterpAlpha = 0;
 	  ReleaseGrabbedActor(PhysicsGrabber);
-	}
-
-simulated function Tick(float DeltaTime) 
-	{
-		local vector NewHandlePos, StartLoc, PlayerViewPointLoc;
-		local Rotator Aim, PlayerViewPointRot;
-		local Quat NewHandleOrientation, PawnQuat;
-
-		if(GrabbedCrate()) 
-		{
-			if (self.IsA('amGrabCrate'))
-			{
-				if(!CanStillHold() || PlayerBasedOnMe()) { Drop(); return; }
-
-				GetPlayerPawn().GetActorEyesViewPoint(PlayerViewPointLoc, PlayerViewPointRot);
- 				StartLoc = PlayerViewPointLoc;
-				Aim = PlayerViewPointRot;
-
-				// Don't let crate get too close to player's feet when looking down
-				if(Aim.Pitch > 17000 && Aim.Pitch < 56000) { Aim.Pitch = 56000; }
-
-				// Smooth the crate into a firm grip
-				if(InterpAlpha < 100) { InterpAlpha += 0.8; }
-
-				NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));
-				NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha);
-				PhysicsGrabber.SetLocation(NewHandlePos);
-
-				PawnQuat = QuatFromRotator(PlayerViewPointRot);
-				NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
-				PhysicsGrabber.SetOrientation(NewHandleOrientation);
-			}
-		}
 	}
 
 function bool GrabbedCrate() 
@@ -133,7 +79,7 @@ private function bool IsFalling()
 	  return Round(Abs(Velocity.z)) != 0.0;
 	}
 
-private function bool CanStillHold() 
+protected function bool CanStillHold() 
 	{
 	  local float CurrentHoldDistance;
 	  CurrentHoldDistance = VSize(Self.Location - PhysicsGrabber.Location);
@@ -162,7 +108,7 @@ protected function Pawn GetPlayerPawn()
 	  return PlayerPawn;
 	}
 
-private function bool PlayerBasedOnMe() 
+protected function bool PlayerBasedOnMe() 
 	{
 	  return GetPlayerPawn().Base == Self;
 	}
@@ -195,7 +141,7 @@ defaultproperties
 		bCanStepUpOn=false
 		bPawnCanBaseOn=true
 		bSafeBaseIfAsleep=false
-		Mass=100
+		
 
   
 		HighFrictionMat=PhysicalMaterial'timorem_devpak.Materials.HighFriction'

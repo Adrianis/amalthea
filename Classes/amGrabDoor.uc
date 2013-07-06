@@ -3,7 +3,7 @@ class amGrabDoor extends amGrabObject;
 /** limits amount of rotation pitch/yaw to apply as a force for door movement */
 var() float MaxMovementForce; 
 
-/** range within which the door should close itself */
+/** range within which the door should close itself, if too small then a fast moving door might skip it entirely */
 var() float DoorCloseRange;
 
 var bool bCanAutoClose; // flag to control when the door should close itself
@@ -81,7 +81,7 @@ DefaultProperties
 {	
 	HoldDistanceMax=250.0
 
-	DoorCloseRange=300
+	DoorCloseRange=600
 
 	bCanAutoClose=true
 
