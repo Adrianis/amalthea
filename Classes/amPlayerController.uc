@@ -9,6 +9,9 @@ var float LeanAccel; //Used in script.
 var float LeanSpeed; //Set it up in the default properties block to 10.0f for example
 var float LeanAngle; // What is the angle of the leaning? Set it to 15 for example in the default properties
 
+	var amGrabObject HeldObject; // reference for amPawn.CurrentlyHeldObject
+	var bool bSpinningObject; // flag for checking if player is spinning an object
+
 
 
 /*********************
@@ -128,10 +131,12 @@ state GrabbedDoor extends PlayerWalking
 		// Also note that it needs to use the VSize check manually rather than using IsReachable() as simply using that function 
 		//  produces a bug where the direction for yaw force is reversed when standing to the -y of the object
 
-		if (VSize(amPawn(Pawn).CurrentlyHeldObject.Location - Pawn.Location) < amPawn(Pawn).CurrentlyHeldObject.HoldDistanceMax)
+		HeldObject = amPawn(Pawn).CurrentlyHeldObject;
+
+		if (VSize(HeldObject.Location - Pawn.Location) < HeldObject.HoldDistanceMax)
 		{
 			// send the rotation change data over to ProcessDoorMove in amGrabObject
-			amGrabDoor(amPawn(Pawn).CurrentlyHeldObject).ProcessDoorMove(DeltaTime, out_ViewRotation, DeltaRot);
+			amGrabDoor(HeldObject).ProcessDoorMove(DeltaTime, out_ViewRotation, DeltaRot);
 		}
 		else 
 		{
@@ -141,8 +146,43 @@ state GrabbedDoor extends PlayerWalking
 	}
 }
 
+state SpinningHoldObject extends PlayerWalking
+{
+	function ProcessViewRotation(float DeltaTime, out Rotator out_ViewRotation, Rotator DeltaRot)
+	{
+		HeldObject = amPawn(Pawn).CurrentlyHeldObject;
+		amGrabCrate(HeldObject).ProcessObjectSpin(DeltaTime, out_ViewRotation, DeltaRot);
+	}
+
+	// security, make sure flags are set correctly
+	function BeginState(name PreviousStateName) { bSpinningObject = true; }
+	function EndState(name NextStateName) { bSpinningObject = false; }
+}
 
 
+exec function StartObjectSpin()
+	{
+		`log("STARTOBJECTSPIN");
+
+		HeldObject = amPawn(Pawn).CurrentlyHeldObject;
+
+		// only change state if the player is grabbing a hold object
+		if (HeldObject.GrabbedCrate() 
+			&& HeldObject.IsA('amGrabCrate')) {
+				self.GotoState('SpinningHoldObject');
+				bSpinningObject = true;
+		}
+	}
+exec function StopObjectSpin()
+	{
+		`log("STOPOBJECTSPIN");
+		
+		// exit spinning state if we are in it
+		if (bSpinningObject) {
+			self.GotoState('PlayerWalking');
+			bSpinningObject = false;
+		}
+	}
 
 
 exec function ToggleTorch()

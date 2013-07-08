@@ -8,10 +8,12 @@ class amGrabObject extends KActor
 	var Pawn PlayerPawn;
 	var float HoldDistanceMax, HoldDistance;
 	var RB_Handle PhysicsGrabber;
-	var Quat HoldOrientation;
 	var float InterpAlpha;
 	var PhysicalMaterial HighFrictionMat;
 	var PhysicalMaterial LowFrictionMat;
+
+	/** Mass for the object, obviously! Less obviously, it doesn't obey any proper laws of physics (i.e. its not newtonian): 7 MIN (for a pencil), 100 MAX (for an anvil)
+	 *  Any lower than 7, throwing the object will make it fly through walls. Any higher, and it's barely liftable, might as well be a push object*/
 	var() float Mass;
 	
 	
@@ -132,8 +134,6 @@ defaultproperties
 		PhysicsGrabber=RB_Handle0
 
 
-		HoldDistanceMax=180.0
-		HoldDistance=150.0
 		InterpAlpha=0.0
 		bNoEncroachCheck=false
 		bWakeOnLevelStart=true

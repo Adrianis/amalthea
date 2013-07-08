@@ -1,10 +1,13 @@
 class amGrabCrate extends amGrabObject;
 
+	var Quat HoldOrientation;
+	var Rotator NewViewRotation;
+
 simulated function Tick(float DeltaTime) 
 	{
 		local vector NewHandlePos, StartLoc, PlayerViewPointLoc;
 		local Rotator Aim, PlayerViewPointRot;
-		local Quat NewHandleOrientation, PawnQuat;
+		//local Quat NewHandleOrientation, PawnQuat;
 
 		if(GrabbedCrate()) 
 		{
@@ -21,19 +24,19 @@ simulated function Tick(float DeltaTime)
 			if(InterpAlpha < 100) { InterpAlpha += 0.8; }
 
 			NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));
-			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha);
+			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha/(Mass/2));
 			PhysicsGrabber.SetLocation(NewHandlePos);
 
-			PawnQuat = QuatFromRotator(PlayerViewPointRot);
-			NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
-			PhysicsGrabber.SetOrientation(NewHandleOrientation);
+			//PawnQuat = QuatFromRotator(PlayerViewPointRot);
+			//NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
+			//PhysicsGrabber.SetOrientation(HoldOrientation);
 		}
 	}
 
 
 function ToggleGrab()
 	{
-		local Quat PawnQuat, InvPawnQuat, ActorQuat;
+		//local Quat PawnQuat, InvPawnQuat, ActorQuat;
 
 		super.ToggleGrab();
 
@@ -45,14 +48,28 @@ function ToggleGrab()
 			CollisionComponent.SetPhysMaterialOverride(LowFrictionMat);
 			PhysicsGrabber.GrabComponent(CollisionComponent, 'None', CollisionComponent.Bounds.Origin, true);
 
-			PawnQuat = QuatFromRotator(Rotation);
-			InvPawnQuat = QuatInvert(PawnQuat);
-			ActorQuat = QuatFromRotator(Rotation);
-			HoldOrientation = QuatProduct(InvPawnQuat, ActorQuat);
+			//PawnQuat = QuatFromRotator(Rotation);
+			//InvPawnQuat = QuatInvert(PawnQuat);
+			//ActorQuat = QuatFromRotator(Rotation);
+			//HoldOrientation = QuatProduct(InvPawnQuat, ActorQuat);
+			
 		}
+	}
+
+
+function ProcessObjectSpin(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot)
+	{
+		/*local Quat NewOrientation;
+		
+		NewViewRotation += DeltaRot;
+		NewOrientation = QuatFromRotator(ViewRotation);
+		PhysicsGrabber.SetOrientation(NewOrientation);*/
 	}
 
 defaultproperties
 {
+	HoldDistanceMax=180.0
+	HoldDistance=150.0
+
 	Mass=100
 }
