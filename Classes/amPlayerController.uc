@@ -11,6 +11,7 @@ var float LeanAngle; // What is the angle of the leaning? Set it to 15 for examp
 
 	var amGrabObject HeldObject; // reference for amPawn.CurrentlyHeldObject
 	var bool bSpinningObject; // flag for checking if player is spinning an object
+	var Rotator RotationAtSpinStart;
 
 
 
@@ -146,17 +147,26 @@ state GrabbedDoor extends PlayerWalking
 	}
 }
 
+
+
 state SpinningHoldObject extends PlayerWalking
 {
 	function ProcessViewRotation(float DeltaTime, out Rotator out_ViewRotation, Rotator DeltaRot)
 	{
 		HeldObject = amPawn(Pawn).CurrentlyHeldObject;
-		amGrabCrate(HeldObject).ProcessObjectSpin(DeltaTime, out_ViewRotation, DeltaRot);
+		amGrabCrate(HeldObject).ProcessObjectSpin(DeltaTime, out_ViewRotation, DeltaRot, RotationAtSpinStart);
 	}
 
 	// security, make sure flags are set correctly
-	function BeginState(name PreviousStateName) { bSpinningObject = true; }
-	function EndState(name NextStateName) { bSpinningObject = false; }
+	function BeginState(name PreviousStateName) 
+		{ 
+			RotationAtSpinStart = self.Rotation;
+			bSpinningObject = true;
+		}
+	function EndState(name NextStateName) 
+		{ 
+			bSpinningObject = false; 
+		}
 }
 
 

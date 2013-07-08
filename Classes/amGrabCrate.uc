@@ -1,7 +1,6 @@
 class amGrabCrate extends amGrabObject;
 
 	var Quat HoldOrientation;
-	var Rotator NewViewRotation;
 
 simulated function Tick(float DeltaTime) 
 	{
@@ -48,23 +47,25 @@ function ToggleGrab()
 			CollisionComponent.SetPhysMaterialOverride(LowFrictionMat);
 			PhysicsGrabber.GrabComponent(CollisionComponent, 'None', CollisionComponent.Bounds.Origin, true);
 
-			//PawnQuat = QuatFromRotator(Rotation);
-			//InvPawnQuat = QuatInvert(PawnQuat);
-			//ActorQuat = QuatFromRotator(Rotation);
-			//HoldOrientation = QuatProduct(InvPawnQuat, ActorQuat);
-			
+			/*PawnQuat = QuatFromRotator(Rotation);
+			InvPawnQuat = QuatInvert(PawnQuat);
+			ActorQuat = QuatFromRotator(Rotation);
+			HoldOrientation = QuatProduct(InvPawnQuat, ActorQuat);*/
 		}
 	}
 
-
-function ProcessObjectSpin(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot)
+function ProcessObjectSpin(float DeltaTime, Rotator ViewRotation, Rotator DeltaRot, out Rotator out_Rotation)
 	{
-		/*local Quat NewOrientation;
-		
-		NewViewRotation += DeltaRot;
-		NewOrientation = QuatFromRotator(ViewRotation);
-		PhysicsGrabber.SetOrientation(NewOrientation);*/
+		local Rotator NewRotation, OldRotation;
+		local Quat NewOrientation;
+
+		out_Rotation += DeltaRot;
+		OldRotation = QuatToRotator(PhysicsGrabber.GetOrientation());
+		NewRotation = RInterpTo(OldRotation, out_Rotation, DeltaTime, 100);
+		NewOrientation = QuatFromRotator(NewRotation);
+		PhysicsGrabber.SetOrientation(NewOrientation);
 	}
+
 
 defaultproperties
 {
