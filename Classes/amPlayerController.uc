@@ -149,7 +149,7 @@ state GrabbedDoor extends PlayerWalking
 
 
 
-state SpinningHoldObject extends PlayerWalking
+/*state SpinningHoldObject extends PlayerWalking
 {
 	function ProcessViewRotation(float DeltaTime, out Rotator out_ViewRotation, Rotator DeltaRot)
 	{
@@ -167,12 +167,12 @@ state SpinningHoldObject extends PlayerWalking
 		{ 
 			bSpinningObject = false; 
 		}
-}
+}*/
 
 
-exec function StartObjectSpin()
+function StartObjectSpin()
 	{
-		`log("STARTOBJECTSPIN");
+		/*`log("STARTOBJECTSPIN");
 
 		HeldObject = amPawn(Pawn).CurrentlyHeldObject;
 
@@ -181,17 +181,17 @@ exec function StartObjectSpin()
 			&& HeldObject.IsA('amGrabCrate')) {
 				self.GotoState('SpinningHoldObject');
 				bSpinningObject = true;
-		}
+		}*/
 	}
 exec function StopObjectSpin()
 	{
-		`log("STOPOBJECTSPIN");
+		/*`log("STOPOBJECTSPIN");
 		
 		// exit spinning state if we are in it
 		if (bSpinningObject) {
 			self.GotoState('PlayerWalking');
 			bSpinningObject = false;
-		}
+		}*/
 	}
 
 
