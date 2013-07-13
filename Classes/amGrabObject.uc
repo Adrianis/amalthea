@@ -13,7 +13,7 @@ class amGrabObject extends KActor
 	var PhysicalMaterial LowFrictionMat;
 
 	/** Mass for the object, obviously! Less obviously, it doesn't obey any proper laws of physics (i.e. its not newtonian): 7 MIN (for a pencil), 100 MAX (for an anvil)
-	 *  Any lower than 7, throwing the object will make it fly through walls. Any higher, and it's barely liftable, might as well be a push object*/
+	 *  Any lower than 7, throwing the object will make it fly through walls. Any higher than 100, and it becomes un-liftable, so why even grab it*/
 	var() float Mass;
 	
 	

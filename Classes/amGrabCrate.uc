@@ -1,12 +1,13 @@
 class amGrabCrate extends amGrabObject;
 
-	//var Quat HoldOrientation;
+	var Quat HoldOrientation;
+	var bool bCorrectOrientation;
 
 simulated function Tick(float DeltaTime) 
 	{
 		local vector NewHandlePos, StartLoc, PlayerViewPointLoc;
 		local Rotator Aim, PlayerViewPointRot;
-		//local Quat NewHandleOrientation, PawnQuat;
+		local Quat NewHandleOrientation, PawnQuat;
 
 		if(GrabbedCrate()) 
 		{
@@ -26,16 +27,19 @@ simulated function Tick(float DeltaTime)
 			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha/(Mass/2));
 			PhysicsGrabber.SetLocation(NewHandlePos);
 
-			/*PawnQuat = QuatFromRotator(PlayerViewPointRot);
-			NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
-			PhysicsGrabber.SetOrientation(NewHandleOrientation);*/
+			if (bCorrectOrientation) {
+				`log("OBJECT TICK SAYS ORIENT");
+				PawnQuat = QuatFromRotator(PlayerViewPointRot);
+				NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
+				PhysicsGrabber.SetOrientation(NewHandleOrientation);
+			}
 		}
 	}
 
 
 function ToggleGrab()
 	{
-		//local Quat PawnQuat, InvPawnQuat, ActorQuat;
+		local Quat PawnQuat, InvPawnQuat, ActorQuat;
 
 		super.ToggleGrab();
 
@@ -47,10 +51,10 @@ function ToggleGrab()
 			CollisionComponent.SetPhysMaterialOverride(LowFrictionMat);
 			PhysicsGrabber.GrabComponent(CollisionComponent, 'None', CollisionComponent.Bounds.Origin, true);
 
-			/*PawnQuat = QuatFromRotator(Rotation);
+			PawnQuat = QuatFromRotator(Rotation);
 			InvPawnQuat = QuatInvert(PawnQuat);
 			ActorQuat = QuatFromRotator(Rotation);
-			HoldOrientation = QuatProduct(InvPawnQuat, ActorQuat);*/
+			HoldOrientation = QuatProduct(InvPawnQuat, ActorQuat);
 		}
 	}
 
@@ -81,4 +85,6 @@ defaultproperties
 	InterpAlpha=10.0
 
 	Mass=100
+
+	bCorrectOrientation=false
 }

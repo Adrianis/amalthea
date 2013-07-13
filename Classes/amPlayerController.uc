@@ -170,11 +170,13 @@ state GrabbedDoor extends PlayerWalking
 }*/
 
 
-function StartObjectSpin()
+exec function StartObjectSpin()
 	{
-		/*`log("STARTOBJECTSPIN");
+		amGrabCrate(amPawn(Pawn).CurrentlyHeldObject).bCorrectOrientation = true;
+		
+		`log("STARTOBJECTSPIN");
 
-		HeldObject = amPawn(Pawn).CurrentlyHeldObject;
+		/*HeldObject = amPawn(Pawn).CurrentlyHeldObject;
 
 		// only change state if the player is grabbing a hold object
 		if (HeldObject.GrabbedCrate() 
@@ -185,9 +187,11 @@ function StartObjectSpin()
 	}
 exec function StopObjectSpin()
 	{
-		/*`log("STOPOBJECTSPIN");
+		amGrabCrate(amPawn(Pawn).CurrentlyHeldObject).bCorrectOrientation = false;
 		
-		// exit spinning state if we are in it
+		`log("STOPOBJECTSPIN");
+		
+		/*// exit spinning state if we are in it
 		if (bSpinningObject) {
 			self.GotoState('PlayerWalking');
 			bSpinningObject = false;
