@@ -174,9 +174,9 @@ exec function StartObjectSpin()
 	{
 		amGrabCrate(amPawn(Pawn).CurrentlyHeldObject).bCorrectOrientation = true;
 		
-		`log("STARTOBJECTSPIN");
+		/*`log("STARTOBJECTSPIN");
 
-		/*HeldObject = amPawn(Pawn).CurrentlyHeldObject;
+		HeldObject = amPawn(Pawn).CurrentlyHeldObject;
 
 		// only change state if the player is grabbing a hold object
 		if (HeldObject.GrabbedCrate() 
@@ -189,9 +189,9 @@ exec function StopObjectSpin()
 	{
 		amGrabCrate(amPawn(Pawn).CurrentlyHeldObject).bCorrectOrientation = false;
 		
-		`log("STOPOBJECTSPIN");
+		/*`log("STOPOBJECTSPIN");
 		
-		/*// exit spinning state if we are in it
+		// exit spinning state if we are in it
 		if (bSpinningObject) {
 			self.GotoState('PlayerWalking');
 			bSpinningObject = false;

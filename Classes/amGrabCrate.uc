@@ -28,7 +28,6 @@ simulated function Tick(float DeltaTime)
 			PhysicsGrabber.SetLocation(NewHandlePos);
 
 			if (bCorrectOrientation) {
-				`log("OBJECT TICK SAYS ORIENT");
 				PawnQuat = QuatFromRotator(PlayerViewPointRot);
 				NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
 				PhysicsGrabber.SetOrientation(NewHandleOrientation);

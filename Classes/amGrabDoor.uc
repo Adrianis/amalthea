@@ -79,6 +79,9 @@ function bool DoorWithinCloseRange()
 
 DefaultProperties
 {	
+	
+
+
 	HoldDistanceMax=250.0
 
 	DoorCloseRange=600
