@@ -57,7 +57,7 @@ simulated function Tick(float DeltaTime)
 				ZeroMovement.X=0;
 				ZeroMovement.Y=0;
 				ZeroMovement.Z=0;
-				if(InterpAlpha < 100) { InterpAlpha += 0.8; } 
+				if(InterpAlpha < 100) { InterpAlpha += 0.8; }
 				DesiredRotation = RInterpTo(self.Rotation, RotationAtStart, DeltaTime, InterpAlpha);
 				self.CollisionComponent.SetRBRotation(DesiredRotation); // have to rotate the RB comp, rotate on self does not work
 				self.CollisionComponent.SetRBAngularVelocity(ZeroMovement); // gets rid of latent velocity
@@ -69,7 +69,8 @@ simulated function Tick(float DeltaTime)
 function bool DoorWithinCloseRange()
 	{
 		if (self.Rotation.Yaw >= (RotationAtStart.Yaw - DoorCloseRange)
-			&& self.Rotation.Yaw <= (RotationAtStart.Yaw + DoorCloseRange))
+			&& self.Rotation.Yaw <= (RotationAtStart.Yaw + DoorCloseRange)
+			&& self.Rotation.Yaw != RotationAtStart.Yaw )
 			return true;
 		else 
 			return false;
