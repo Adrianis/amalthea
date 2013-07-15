@@ -54,9 +54,7 @@ simulated function Tick(float DeltaTime)
 		{
 			if (DoorWithinCloseRange()) 
 			{
-				ZeroMovement.X=0;
-				ZeroMovement.Y=0;
-				ZeroMovement.Z=0;
+				ZeroMovement.X=0; ZeroMovement.Y=0; ZeroMovement.Z=0;
 				if(InterpAlpha < 100) { InterpAlpha += 0.8; }
 				DesiredRotation = RInterpTo(self.Rotation, RotationAtStart, DeltaTime, InterpAlpha);
 				self.CollisionComponent.SetRBRotation(DesiredRotation); // have to rotate the RB comp, rotate on self does not work

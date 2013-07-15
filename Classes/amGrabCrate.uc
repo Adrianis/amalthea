@@ -27,11 +27,12 @@ simulated function Tick(float DeltaTime)
 			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha/(Mass/2));
 			PhysicsGrabber.SetLocation(NewHandlePos);
 
-			if (bCorrectOrientation) {
-				PawnQuat = QuatFromRotator(PlayerViewPointRot);
+			// TEST if (bCorrectOrientation) {
+				// TEST PawnQuat = QuatFromRotator(PlayerViewPointRot);
+				PawnQuat = QuatFromRotator(Rotation);
 				NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
 				PhysicsGrabber.SetOrientation(NewHandleOrientation);
-			}
+			//}
 		}
 	}
 
