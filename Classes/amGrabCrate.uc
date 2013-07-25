@@ -1,4 +1,5 @@
-class amGrabCrate extends amGrabObject;
+class amGrabCrate extends amGrabObject
+	abstract;
 
 	var Quat HoldOrientation;
 	var bool bCorrectOrientation;

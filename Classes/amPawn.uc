@@ -100,7 +100,8 @@ simulated function StopFire(byte FireModeNum)
 	{
 		if (FireModeNum == 0) 
 		{
-			CurrentlyHeldObject.Drop();
+			if (CurrentlyHeldObject != none)
+				CurrentlyHeldObject.Drop();
 			self.GotoState('Auto');
 		}
 	}
