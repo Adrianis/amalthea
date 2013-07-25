@@ -3,6 +3,9 @@ class amGrabCrate extends amGrabObject
 
 	var Quat HoldOrientation;
 	var bool bCorrectOrientation;
+	var bool bIsTouchingActor;
+
+	var() float fCollisionRange;
 
 simulated function Tick(float DeltaTime) 
 	{
@@ -28,9 +31,11 @@ simulated function Tick(float DeltaTime)
 			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha/(Mass/2));
 			PhysicsGrabber.SetLocation(NewHandlePos);
 
-			PawnQuat = QuatFromRotator(PlayerViewPointRot);
-			NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
-			PhysicsGrabber.SetOrientation(NewHandleOrientation);
+			if (!IsTouchingKActor()) {
+				PawnQuat = QuatFromRotator(PlayerViewPointRot);
+				NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
+				PhysicsGrabber.SetOrientation(NewHandleOrientation);
+			}
 		}
 	}
 
@@ -75,6 +80,23 @@ function ToggleGrab()
 	}*/
 
 
+	
+function bool IsTouchingKActor()
+	{
+		local bool bReturn;
+		local KActor A;
+		bReturn = false;
+
+		foreach CollidingActors(class'KActor', A, fCollisionRange) {
+			if (A != none) {
+				bReturn = true;
+				`Log("IS TOUCHING A KACTOR");
+			}
+		}
+
+		return bReturn;
+	}
+
 defaultproperties
 {
 	HoldDistanceMax=180.0
@@ -85,4 +107,6 @@ defaultproperties
 	Mass=100
 
 	bCorrectOrientation=false
+
+	fCollisionRange=5.0
 }

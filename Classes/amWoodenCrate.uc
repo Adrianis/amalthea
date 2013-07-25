@@ -8,5 +8,7 @@ DefaultProperties
 	End Object
 	Components.Add(StaticMeshComponent0)
 	CollisionComponent=StaticMeshComponent0
+	bCollideActors=true
+	bCollideWorld=true
 	Mass=13
 }
