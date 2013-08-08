@@ -1,5 +1,5 @@
 class amGrabCrate extends amGrabObject
-	abstract;
+	;
 
 	var Quat HoldOrientation;
 	var bool bCorrectOrientation;
@@ -28,8 +28,21 @@ simulated function Tick(float DeltaTime)
 			if(InterpAlpha < 100) { InterpAlpha += 0.8; }
 
 			NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));
+
+			`log("StartLoc: "@StartLoc
+				@"HoldDistance: "@HoldDistance
+				@"AimVec: "@Vector(Aim)
+				@"First HandlePos: "@ NewHandlePos);
+									
 			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha/(Mass/2));
+
+			`log("PhysGrabLoc: "@PhysicsGrabber.Location
+				@"Second HandlePos: "@NewHandlePos);
+
 			PhysicsGrabber.SetLocation(NewHandlePos);
+
+			`log("Final HandlePos: "@NewHandlePos);
+
 
 			if (!IsTouchingKActor()) {
 				PawnQuat = QuatFromRotator(PlayerViewPointRot);
@@ -85,9 +98,9 @@ function bool IsTouchingKActor()
 	{
 		local bool bReturn;
 		local KActor A;
-		bReturn = false;
 
-		foreach CollidingActors(class'KActor', A, fCollisionRange) {
+		bReturn = false;
+		foreach OverlappingActors(class'KActor', A, fCollisionRange, PhysicsGrabber.Location) {
 			if (A != none) {
 				bReturn = true;
 				`Log("IS TOUCHING A KACTOR");
