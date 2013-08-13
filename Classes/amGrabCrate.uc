@@ -27,28 +27,19 @@ simulated function Tick(float DeltaTime)
 			// Smooth the crate into a firm grip
 			if(InterpAlpha < 100) { InterpAlpha += 0.8; }
 
-			NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));
 
-			`log("StartLoc: "@StartLoc
-				@"HoldDistance: "@HoldDistance
-				@"AimVec: "@Vector(Aim)
-				@"First HandlePos: "@ NewHandlePos);
-									
+			`log("PhysicsAssetLoc: "@PhysicsGrabber.Location
+				@"AssetLoc: "@self.Location);  
+
+			NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));		
 			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha/(Mass/2));
-
-			`log("PhysGrabLoc: "@PhysicsGrabber.Location
-				@"Second HandlePos: "@NewHandlePos);
-
 			PhysicsGrabber.SetLocation(NewHandlePos);
 
-			`log("Final HandlePos: "@NewHandlePos);
-
-
-			if (!IsTouchingKActor()) {
+			//if (!IsTouchingKActor()) {
 				PawnQuat = QuatFromRotator(PlayerViewPointRot);
 				NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
 				PhysicsGrabber.SetOrientation(NewHandleOrientation);
-			}
+			//} 
 		}
 	}
 
@@ -85,11 +76,11 @@ function ToggleGrab()
 		self.CollisionComponent.SetRBRotation(NewRotation);
 		self.SetRotation(NewRotation);
 		
-		/*out_Rotation += DeltaRot;
+		out_Rotation += DeltaRot;
 		OldRotation = QuatToRotator(PhysicsGrabber.GetOrientation());
 		NewRotation = RInterpTo(OldRotation, out_Rotation, DeltaTime, 100);
 		NewOrientation = QuatFromRotator(NewRotation);
-		PhysicsGrabber.SetOrientation(NewOrientation);*/
+		PhysicsGrabber.SetOrientation(NewOrientation);
 	}*/
 
 
