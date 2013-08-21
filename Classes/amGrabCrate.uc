@@ -6,6 +6,7 @@ class amGrabCrate extends amGrabObject
 	var bool bIsTouchingActor;
 
 	var() float fCollisionRange;
+	var() float fPositioningForce;
 
 simulated function Tick(float DeltaTime) 
 	{
@@ -28,13 +29,22 @@ simulated function Tick(float DeltaTime)
 			if(InterpAlpha < 100) { InterpAlpha += 0.8; }
 
 
-			`log("PhysicsAssetLoc: "@PhysicsGrabber.Location
-				@"AssetLoc: "@self.Location);  
+			`log("A PhysicsAssetLoc: "@PhysicsGrabber.Location
+				@"A AssetLoc: "@self.Location);  
+			
+			NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));
+			
+			//NewHandlePos = NewHandlePos - PhysicsGrabber.Location;
+			//PhysicsGrabber.GrabbedComponent.AddImpulse(NewHandlePos * fPositioningForce); 
 
-			NewHandlePos = StartLoc + (HoldDistance * Vector(Aim));		
+			//NewHandlePos = NewHandlePos - PhysicsGrabber.Location;
+			//PhysicsGrabber.GrabbedComponent.AddForce(NewHandlePos * fPositioningForce);
+			
 			NewHandlePos = VInterpTo(PhysicsGrabber.Location, NewHandlePos, DeltaTime, InterpAlpha/(Mass/2));
 			PhysicsGrabber.SetLocation(NewHandlePos);
-
+			//PhysicsGrabber.GrabbedComponent.SetRBPosition(NewHandlePos);
+			//self.SetLocation(NewHandlePos);
+			
 			//if (!IsTouchingKActor()) {
 				PawnQuat = QuatFromRotator(PlayerViewPointRot);
 				NewHandleOrientation = QuatProduct(PawnQuat, HoldOrientation);
@@ -113,4 +123,5 @@ defaultproperties
 	bCorrectOrientation=false
 
 	fCollisionRange=5.0
+	fPositioningForce=0.0
 }
