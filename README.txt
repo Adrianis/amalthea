@@ -17,9 +17,3 @@ $ <enter username and password when prompted>
 To get recent changes from the remote repo
 $ git pull default master
 $ <enter username and password if prompted>
-
-
-
-SC: extra line
-Another extra line! Go Sammeh!
-Random change!
